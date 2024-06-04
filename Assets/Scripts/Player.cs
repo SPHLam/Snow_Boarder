@@ -17,4 +17,12 @@ public class Player : MonoBehaviour
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         _rb2d.AddTorque(horizontalInput * 10);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.transform.tag == "Ground")
+        {
+            Debug.Log("Hit the head!");
+        }
+    }
 }
