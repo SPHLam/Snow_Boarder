@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class Player : MonoBehaviour
     {
         if (collision.transform.tag == "Ground")
         {
-            Debug.Log("Hit the head!");
+            SceneManager.LoadScene(0);
         }
     }
 }
