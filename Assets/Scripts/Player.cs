@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
     Rigidbody2D _rb2d;
+    private float _sceneReloadDelay = 0.2f;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +24,12 @@ public class Player : MonoBehaviour
     {
         if (collision.transform.tag == "Ground")
         {
-            SceneManager.LoadScene(0);
+            Invoke("ReloadScene", _sceneReloadDelay);
         }
+    }
+
+    private void ReloadScene()
+    {
+        SceneManager.LoadScene(0);
     }
 }
