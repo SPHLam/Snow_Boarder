@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
     Rigidbody2D _rb2d;
-    private float _sceneReloadDelay = 0.5f;
+    private float _sceneReloadDelay = 2f;
 
     [SerializeField]
     private ParticleSystem _crashEffect;
@@ -16,7 +16,13 @@ public class Player : MonoBehaviour
 
     private SurfaceEffector2D _surfaceEffector2D;
 
+    [SerializeField]
+    private AudioClip _crashSFX;
+
     private float _playerSpeed = 10;
+
+    private bool _canMove = true;
+    private bool _playCrashSFX = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,15 +33,25 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RotatePlayerMovement();
-        SpeedBoostMovement();
+        if (_canMove)
+        {
+            RotatePlayerMovement();
+            SpeedBoostMovement();
+        }
     }
 
+    // Crash Detection
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.transform.tag == "Ground")
         {
+            DisableControl();
             _crashEffect.Play();
+            if (!_playCrashSFX)
+            {
+                GetComponent<AudioSource>().PlayOneShot(_crashSFX);
+                _playCrashSFX = true;
+            }
             Invoke("ReloadScene", _sceneReloadDelay);
         }
     }
@@ -71,5 +87,10 @@ public class Player : MonoBehaviour
     {
         float verticalInput = Input.GetAxis("Vertical");
         _surfaceEffector2D.speed = _playerSpeed + verticalInput * 10;
+    }
+
+    public void DisableControl()
+    {
+        _canMove = false;
     }
 }

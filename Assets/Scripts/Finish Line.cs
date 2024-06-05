@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class FinishLine : MonoBehaviour
 {
-    private float _sceneReloadDelay = 0.5f;
+    private float _sceneReloadDelay = 2f;
     [SerializeField]
     private ParticleSystem _finishEffect;
     private void OnTriggerEnter2D(Collider2D collision)
@@ -13,6 +13,11 @@ public class FinishLine : MonoBehaviour
         if (collision.transform.tag == "Player")
         {
             _finishEffect.Play();
+            GetComponent<AudioSource>().Play();
+
+            Player player = GameObject.Find("Player").GetComponent<Player>();
+            player.DisableControl();
+
             Invoke("ReloadScene", _sceneReloadDelay);
         }
     }
