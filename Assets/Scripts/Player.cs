@@ -6,7 +6,10 @@ using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
     Rigidbody2D _rb2d;
-    private float _sceneReloadDelay = 0.2f;
+    private float _sceneReloadDelay = 0.5f;
+
+    [SerializeField]
+    private ParticleSystem _crashEffect;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +27,7 @@ public class Player : MonoBehaviour
     {
         if (collision.transform.tag == "Ground")
         {
+            _crashEffect.Play();
             Invoke("ReloadScene", _sceneReloadDelay);
         }
     }
